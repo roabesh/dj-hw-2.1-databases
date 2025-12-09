@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог книг{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1><a href="{% url 'books' %}">Каталог</a></h1>
+        </div>
+        
+        {% if previous_date or next_date %}
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    {% if previous_date %}
+                        <a href="{% url 'books_by_date' previous_date %}">Предыдущая дата ({{ previous_date }})</a>
+                    {% endif %}
+                    {% if previous_date and next_date %}
+                        |
+                    {% endif %}
+                    {% if next_date %}
+                        <a href="{% url 'books_by_date' next_date %}">Следующая дата ({{ next_date }})</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row">
+            {% for book in books %}
+            <div class="book col-md-4">
+                <h2>{{ book.name }}</h2>
+                <p>Автор: {{ book.author }}</p>
+                <p>Дата публикации: {{ book.pub_date|date:"Y-m-d" }}</p>
+            </div>
+            {% empty %}
+            <div class="col-md-12">
+                <p>Книг не найдено</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
